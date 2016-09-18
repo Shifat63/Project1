@@ -1,0 +1,98 @@
+﻿@model Project1.Models.tbl_Deposit
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+   
+
+<h2>Approve Deposit</h2>
+
+<h3 style="color: green">Are you sure you want to approve this Deposit?</h3>
+<div>
+    <h4></h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SourceOfFund)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceOfFund)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.IsVerified)*@
+            @{
+                String VerificationStatus = "";
+                if (Model.IsVerified)
+                {
+                    VerificationStatus = "Approved";
+                }
+                else
+                {
+                    VerificationStatus = "Pending";
+                }
+            }
+            @VerificationStatus
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.tbl_UserInfo.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tbl_UserInfo.Name)
+        </dd>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Approve" class="btn btn-default" />
+                </div>
+            </div>
+        }
+
+    </dl>
+</div>
+
+<div>
+      @Html.ActionLink("Back to Deposit List", "Index")
+</div>

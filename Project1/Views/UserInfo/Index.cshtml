@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Project1.Models.tbl_UserInfo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Director List</h2>
+
+<p>
+    @Html.ActionLink("Create New Director", "Create")
+</p>
+<div class="table-responsive container row">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FatherName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MotherName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DOB)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PresentAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PermanentAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Occupation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mobile)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.tbl_UserType.UserTypeName)
+                </th>*@
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FatherName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MotherName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DOB)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PresentAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PermanentAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Occupation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mobile)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.tbl_UserType.UserTypeName)
+                    </td>*@
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.UserID }) <br/>
+                        @Html.ActionLink("Details", "Details", new { id = item.UserID }) <br/>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.UserID }) <br/>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+ </div>

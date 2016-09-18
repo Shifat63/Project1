@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AlorOvijatriModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_Deposit">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="PaymentDate" Type="date" Nullable="false" />
+          <Property Name="EntryDate" Type="date" Nullable="false" />
+          <Property Name="SourceOfFund" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="200" />
+          <Property Name="IsVerified" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Spending">
+          <Key>
+            <PropertyRef Name="SpendingID" />
+          </Key>
+          <Property Name="SpendingID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="PurposeOfSpending" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="SpendingDate" Type="date" Nullable="false" />
+          <Property Name="EntryDate" Type="date" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="tbl_UserInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserTypeID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FatherName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="MotherName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DOB" Type="date" Nullable="false" />
+          <Property Name="PresentAddress" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="PermanentAddress" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Occupation" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mobile" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NID" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_UserType">
+          <Key>
+            <PropertyRef Name="UserTypeID" />
+          </Key>
+          <Property Name="UserTypeID" Type="int" Nullable="false" />
+          <Property Name="UserTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tbl_Deposit_UserID">
+          <End Role="tbl_UserInfo" Type="Self.tbl_UserInfo" Multiplicity="1" />
+          <End Role="tbl_Deposit" Type="Self.tbl_Deposit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tbl_Deposit">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserInfo_UserTypeID">
+          <End Role="tbl_UserType" Type="Self.tbl_UserType" Multiplicity="1" />
+          <End Role="tbl_UserInfo" Type="Self.tbl_UserInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_UserType">
+              <PropertyRef Name="UserTypeID" />
+            </Principal>
+            <Dependent Role="tbl_UserInfo">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AlorOvijatriModelStoreContainer">
+          <EntitySet Name="tbl_Deposit" EntityType="Self.tbl_Deposit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Spending" EntityType="Self.tbl_Spending" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_UserInfo" EntityType="Self.tbl_UserInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_UserType" EntityType="Self.tbl_UserType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tbl_Deposit_UserID" Association="Self.FK_tbl_Deposit_UserID">
+            <End Role="tbl_UserInfo" EntitySet="tbl_UserInfo" />
+            <End Role="tbl_Deposit" EntitySet="tbl_Deposit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserInfo_UserTypeID" Association="Self.FK_UserInfo_UserTypeID">
+            <End Role="tbl_UserType" EntitySet="tbl_UserType" />
+            <End Role="tbl_UserInfo" EntitySet="tbl_UserInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AlorOvijatriModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_Deposit">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SourceOfFund" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IsVerified" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tbl_UserInfo" Relationship="Self.FK_tbl_Deposit_UserID" FromRole="tbl_Deposit" ToRole="tbl_UserInfo" />
+        </EntityType>
+        <EntityType Name="tbl_Spending">
+          <Key>
+            <PropertyRef Name="SpendingID" />
+          </Key>
+          <Property Name="SpendingID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="PurposeOfSpending" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpendingDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_UserInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FatherName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MotherName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PresentAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PermanentAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Occupation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tbl_Deposit" Relationship="Self.FK_tbl_Deposit_UserID" FromRole="tbl_UserInfo" ToRole="tbl_Deposit" />
+          <NavigationProperty Name="tbl_UserType" Relationship="Self.FK_UserInfo_UserTypeID" FromRole="tbl_UserInfo" ToRole="tbl_UserType" />
+          <Property Name="Password" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_UserType">
+          <Key>
+            <PropertyRef Name="UserTypeID" />
+          </Key>
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <Property Name="UserTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tbl_UserInfo" Relationship="Self.FK_UserInfo_UserTypeID" FromRole="tbl_UserType" ToRole="tbl_UserInfo" />
+        </EntityType>
+        <Association Name="FK_tbl_Deposit_UserID">
+          <End Role="tbl_UserInfo" Type="Self.tbl_UserInfo" Multiplicity="1" />
+          <End Role="tbl_Deposit" Type="Self.tbl_Deposit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tbl_Deposit">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserInfo_UserTypeID">
+          <End Role="tbl_UserType" Type="Self.tbl_UserType" Multiplicity="1" />
+          <End Role="tbl_UserInfo" Type="Self.tbl_UserInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_UserType">
+              <PropertyRef Name="UserTypeID" />
+            </Principal>
+            <Dependent Role="tbl_UserInfo">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AlorOvijatriEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_Deposit" EntityType="Self.tbl_Deposit" />
+          <EntitySet Name="tbl_Spending" EntityType="Self.tbl_Spending" />
+          <EntitySet Name="tbl_UserInfo" EntityType="Self.tbl_UserInfo" />
+          <EntitySet Name="tbl_UserType" EntityType="Self.tbl_UserType" />
+          <AssociationSet Name="FK_tbl_Deposit_UserID" Association="Self.FK_tbl_Deposit_UserID">
+            <End Role="tbl_UserInfo" EntitySet="tbl_UserInfo" />
+            <End Role="tbl_Deposit" EntitySet="tbl_Deposit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserInfo_UserTypeID" Association="Self.FK_UserInfo_UserTypeID">
+            <End Role="tbl_UserType" EntitySet="tbl_UserType" />
+            <End Role="tbl_UserInfo" EntitySet="tbl_UserInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AlorOvijatriModelStoreContainer" CdmEntityContainer="AlorOvijatriEntities">
+          <EntitySetMapping Name="tbl_Deposit">
+            <EntityTypeMapping TypeName="AlorOvijatriModel.tbl_Deposit">
+              <MappingFragment StoreEntitySet="tbl_Deposit">
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="SourceOfFund" ColumnName="SourceOfFund" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Spending">
+            <EntityTypeMapping TypeName="AlorOvijatriModel.tbl_Spending">
+              <MappingFragment StoreEntitySet="tbl_Spending">
+                <ScalarProperty Name="SpendingID" ColumnName="SpendingID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PurposeOfSpending" ColumnName="PurposeOfSpending" />
+                <ScalarProperty Name="SpendingDate" ColumnName="SpendingDate" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_UserInfo">
+            <EntityTypeMapping TypeName="AlorOvijatriModel.tbl_UserInfo">
+              <MappingFragment StoreEntitySet="tbl_UserInfo">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="MotherName" ColumnName="MotherName" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="PresentAddress" ColumnName="PresentAddress" />
+                <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
+                <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_UserType">
+            <EntityTypeMapping TypeName="AlorOvijatriModel.tbl_UserType">
+              <MappingFragment StoreEntitySet="tbl_UserType">
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="UserTypeName" ColumnName="UserTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

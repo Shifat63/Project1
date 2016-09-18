@@ -1,0 +1,120 @@
+﻿@model Project1.Models.tbl_Deposit
+
+@{
+    ViewBag.Title = "Details";
+    if ("Super Admin".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    if ("Director".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutDirector.cshtml";
+    }
+}
+
+<h2>Deposit Details</h2>
+
+<div>
+    <h4></h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SourceOfFund)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceOfFund)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.IsVerified)*@
+            @{
+                String VerificationStatus = "";
+                    if (Model.IsVerified)
+                    {
+                        VerificationStatus = "Approved";
+                    }
+                    else
+                    {
+                        VerificationStatus = "Pending";
+                    }
+            }
+            @VerificationStatus
+        </dd>
+        @if ("Super Admin".Equals(Session["UserType"]) && !Model.UserID.Equals(Session["UserID"].ToString()))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.tbl_UserInfo.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.tbl_UserInfo.Name)
+            </dd>
+        }
+
+    </dl>
+</div>
+<p> 
+    @{
+        var Slash = " | ";
+    }
+    @if ("Director".Equals(Session["UserType"]))
+    {
+        if(!Model.IsVerified)
+        { 
+            @Html.ActionLink("Edit", "Edit", new { id = Model.PaymentID }) @Slash
+        }
+        @Html.ActionLink("Back to Deposit List", "IndexForDirectors")
+    }
+    @if ("Super Admin".Equals(Session["UserType"]))
+    {
+        if(!Model.UserID.Equals(Session["UserID"].ToString()))
+        { 
+            @Html.ActionLink("Back to Deposit List", "Index")
+        }
+        else
+        {
+            if(!Model.IsVerified)
+            { 
+                @Html.ActionLink("Edit", "Edit", new { id = Model.PaymentID }) @Slash
+            }
+            @Html.ActionLink("Back to Deposit List", "IndexForDirectors")
+        }
+    }
+</p>

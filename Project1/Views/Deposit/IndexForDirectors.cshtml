@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Project1.Models.tbl_Deposit>
+
+@{
+    ViewBag.Title = "IndexForDirectors";
+    if ("Super Admin".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    if ("Director".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutDirector.cshtml";
+    }
+}
+
+@Html.Partial("_PartialSearchDepositDirector", new Project1.Models.DepositSearch())
+
+<p>
+    @Html.ActionLink("Deposit", "Create")
+</p>
+
+@Html.Partial("_PartialDeposit", Model)

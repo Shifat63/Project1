@@ -1,0 +1,167 @@
+﻿@model Project1.Models.tbl_UserInfo
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@Scripts.Render("~/bundles/jqueryui")
+
+<h2>Edit Director</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4></h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.UserID)
+        @Html.HiddenFor(model => model.UserTypeID)
+        @Html.HiddenFor(model => model.IsActive)
+        @Html.HiddenFor(model => model.Password)
+        @Html.HiddenFor(model => model.ConfirmPassword, new { Value = @Model.Password })
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.UserTypeID, "UserTypeID", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("UserTypeID", String.Empty)
+                @Html.ValidationMessageFor(model => model.UserTypeID)
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FatherName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FatherName)
+                @Html.ValidationMessageFor(model => model.FatherName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MotherName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MotherName)
+                @Html.ValidationMessageFor(model => model.MotherName)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.DOB, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DOB)
+                @Html.ValidationMessageFor(model => model.DOB)
+            </div>
+        </div>*@
+
+        @*<input id="DOBPrevious" name="DOBPrevious" type="hidden" value=@Model.DOB />*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DOB, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DOB, new { @id = "DOB", @readonly = "readonly", Value = @Model.DOB })
+                @Html.ValidationMessageFor(model => model.DOB)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PresentAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PresentAddress)
+                @Html.ValidationMessageFor(model => model.PresentAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PermanentAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PermanentAddress)
+                @Html.ValidationMessageFor(model => model.PermanentAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Occupation, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Occupation)
+                @Html.ValidationMessageFor(model => model.Occupation)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Mobile, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Mobile)
+                @Html.ValidationMessageFor(model => model.Mobile)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NID)
+                @Html.ValidationMessageFor(model => model.NID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Director list", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    
+    $(document).ready(function ()
+    {
+        var date = document.getElementById("DOB").value;
+        var mon = parseInt(date.substring(0, 2));
+        var dt = parseInt(date.substring(3, 5));
+        var yr = parseInt(date.substring(6, 10));
+        document.getElementById("DOB").value = mon + '/' + dt + '/' + yr;
+        $("#DOB").datepicker(
+        {
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0",
+        });
+        $("#DOB").datepicker("option", "showAnim", "slide");
+       // $("#DOB").datepicker("option", "defaultDate", new Date(yr, mon - 1, dt));
+    });
+</script>

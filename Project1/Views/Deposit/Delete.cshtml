@@ -1,0 +1,121 @@
+﻿@model Project1.Models.tbl_Deposit
+
+@{
+    ViewBag.Title = "Delete";
+    if ("Super Admin".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    if ("Director".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutDirector.cshtml";
+    }
+}
+
+<h2>Delete Deposit</h2>
+
+<h3 style="color: red">Are you sure you want to delete this Deposit?</h3>
+<div>
+    <h4></h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EntryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EntryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SourceOfFund)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceOfFund)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.IsVerified)*@
+            @{
+                String VerificationStatus = "";
+                if (Model.IsVerified)
+                {
+                    VerificationStatus = "Approved";
+                }
+                else
+                {
+                    VerificationStatus = "Pending";
+                }
+            }
+            @VerificationStatus
+        </dd>
+        @if ("Super Admin".Equals(Session["UserType"]) && !Model.UserID.Equals(Session["UserID"].ToString()))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.tbl_UserInfo.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.tbl_UserInfo.Name)
+            </dd>
+        }
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Delete" class="btn btn-default" />
+                </div>
+            </div>
+        }
+
+    </dl>
+</div>
+
+<div>
+    @if ("Director".Equals(Session["UserType"]))
+    {
+        @Html.ActionLink("Back to Deposit List", "IndexForDirectors")
+    }
+    @if ("Super Admin".Equals(Session["UserType"]))
+    {
+        if(!Model.UserID.Equals(Session["UserID"].ToString()))
+        { 
+            @Html.ActionLink("Back to Deposit List", "Index")
+        }
+        else
+        {
+            @Html.ActionLink("Back to Deposit List", "IndexForDirectors")
+        }
+    }
+</div>

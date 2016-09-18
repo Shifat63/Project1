@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    if("Super Admin".Equals(Session["UserType"]) && Session["UserID"]!=null)
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    if ("Director".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutDirector.cshtml";
+    }
+}
+
+<div class="jumbotron">
+    <h1>Welcome To Alor Ovijatri</h1>
+</div>
+

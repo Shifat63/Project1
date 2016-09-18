@@ -1,0 +1,107 @@
+﻿@model Project1.Models.DepositSearch
+
+@Scripts.Render("~/bundles/jqueryui")
+@{
+    List<SelectListItem> listItems2 = new List<SelectListItem>();
+
+    listItems2.Add(new SelectListItem
+    {
+        Text = "Select Verification status",
+        Value = ""
+    });
+    listItems2.Add(new SelectListItem
+    {
+        Text = "Approved",
+        Value = "1"
+    });
+    listItems2.Add(new SelectListItem
+    {
+        Text = "Pending",
+        Value = "2"
+    });
+
+}
+
+@using (Html.BeginForm("IndexForDirectors", "Deposit"))
+{
+    @Html.AntiForgeryToken()
+   
+    <div class="well-searchbox form-horizontal row jumbotron" id="SearchBox">
+
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                @Html.TextBoxFor(model => model.StartDate, new { @id = "From", @class = "form-control", @placeholder = "From", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.StartDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                @Html.TextBoxFor(model => model.EndDate, new { @id = "To", @class = "form-control", @placeholder = "To", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.EndDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                @Html.DropDownListFor(model => model.IsVerified, listItems2, new { @class = "form-control", @placeholder = "Verification status" })
+                @Html.ValidationMessageFor(model => model.IsVerified)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="form-group container">
+    <div class="row">
+        <div class="col-md-6 col-lg-6 col-sm-12">
+            <h2>My Deposits</h2>
+        </div>
+        @using (Html.BeginForm("SaveAsPDFDepositDirector", "Deposit"))
+        {
+            @Html.HiddenFor(model => model.EndDate)
+            @Html.HiddenFor(model => model.StartDate)
+            @Html.HiddenFor(model => model.IsVerified)
+            <div class="col-md-6 col-lg-6 col-sm-12">
+                <h2 class="col-md-offset-9 col-lg-offset-9 col-sm-offset-0">
+                    <button type="submit" class="btn">
+                        <img height="40px" width="120px" src="@Url.Content("~/Content/images/PDF-Download.jpg")" />
+                    </button>
+                </h2>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var maxDate = new Date();
+        $("#From").datepicker(
+        {
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0",
+            maxDate: maxDate
+        });
+        $("#From").datepicker("option", "showAnim", "slide");
+
+        $("#To").datepicker(
+        {
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0",
+            maxDate: maxDate
+        });
+        $("#To").datepicker("option", "showAnim", "slide");
+    });
+</script>
+
+
+

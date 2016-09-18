@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Project1.Models.tbl_Deposit>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@*<p>
+    @Html.ActionLink("Deposit", "Create")
+</p>*@
+
+@Html.Partial("_PartialSearchDeposit", new Project1.Models.DepositSearch())
+
+<div class="table-responsive container row">
+    
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <th>
+                Serial No.
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SourceOfFund)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsVerified)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tbl_UserInfo.Name)
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+
+        @{
+            int i = 0;
+            String VerificationStatus = "";
+        }
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+            i++;
+                    }
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EntryDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SourceOfFund)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.IsVerified)*@
+                    @{
+                        if (item.IsVerified)
+                        {
+                            VerificationStatus = "Approved";
+                        }
+                        else
+                        {
+                            VerificationStatus = "Pending";
+                        }
+                    }
+                    @VerificationStatus
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.tbl_UserInfo.Name)
+                </td>
+                <td>
+                    @if (!item.IsVerified)
+                    {
+                        @Html.ActionLink("Approve", "Approve", new { id = item.PaymentID }) <br />
+                        @Html.ActionLink("Delete", "Delete", new { id = item.PaymentID }) <br />
+                    }
+                    @Html.ActionLink("Details", "Details", new { id = item.PaymentID })
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>
+
