@@ -69,7 +69,7 @@ namespace Project1.Controllers
                     query = query.Where(x => x.IsVerified == status);
                 }
 
-                return new PartialViewAsPdf("_PartialDeposit", query.ToList())
+                return new ViewAsPdf("Index", query.ToList())
                 {
                     FileName = "Deposit " + DateTime.Today.ToString("dd-MMM-yyyy") + " " + DateTime.Now.ToString("h:mm:ss tt") + ".pdf",
                     PageSize = Size.A4,
@@ -90,6 +90,7 @@ namespace Project1.Controllers
         {
             if (("Director".Equals(Session["UserType"]) || "Super Admin".Equals(Session["UserType"])) && Session["UserID"] != null)
             {
+                ViewBag.tbl_UserInfo = db.tbl_UserInfo;
                 String UserID = Session["UserID"].ToString();
                 var query = (from Deposit in db.tbl_Deposit
                              where Deposit.UserID.Equals(UserID)
@@ -117,9 +118,12 @@ namespace Project1.Controllers
                     }
                     query = query.Where(x => x.IsVerified == status);
                 }
-                return new PartialViewAsPdf("_PartialDeposit", query.ToList())
+                return new ViewAsPdf("Index", query.ToList())
                 {
-                    FileName = "My Deposit " + DateTime.Today.ToString("dd-MMM-yyyy") + " " + DateTime.Now.ToString("h:mm:ss tt") + ".pdf"
+                    FileName = "My Deposit " + DateTime.Today.ToString("dd-MMM-yyyy") + " " + DateTime.Now.ToString("h:mm:ss tt") + ".pdf",
+                    PageSize = Size.A4,
+                    PageOrientation = Orientation.Landscape,
+                    PageMargins = { Left = 10, Right = 10 }
                 };
                 
             }
