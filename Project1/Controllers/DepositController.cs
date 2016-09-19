@@ -32,6 +32,12 @@ namespace Project1.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+        public ActionResult IndexForPDF()
+        {
+            Session.Remove("UserID");
+            Session.Remove("UserType");
+            return RedirectToAction("Login", "Account");
+        }
 
 
         [HttpPost]
@@ -69,11 +75,17 @@ namespace Project1.Controllers
                     query = query.Where(x => x.IsVerified == status);
                 }
 
-                return new ViewAsPdf("Index", query.ToList())
+                ViewBag.PDFTitle = "View Deposits";
+                ViewBag.PDFCreationDate = DateTime.Today.ToString("dd-MMM-yyyy");
+                ViewBag.DepositSearch = depositSearch;
+
+                return new ViewAsPdf("IndexForPDF", query.ToList())
                 {
                     FileName = "Deposit " + DateTime.Today.ToString("dd-MMM-yyyy") + " " + DateTime.Now.ToString("h:mm:ss tt") + ".pdf",
                     PageSize = Size.A4,
                     PageOrientation = Orientation.Landscape,
+                    //PageWidth = 650, // it's in millimeters
+                    //PageHeight = 250,
                     PageMargins = { Left = 10, Right = 10 }
                 };
             }
@@ -118,11 +130,18 @@ namespace Project1.Controllers
                     }
                     query = query.Where(x => x.IsVerified == status);
                 }
-                return new ViewAsPdf("Index", query.ToList())
+
+                ViewBag.PDFTitle = "My Deposits";
+                ViewBag.PDFCreationDate = DateTime.Today.ToString("dd-MMM-yyyy");
+                ViewBag.DepositSearch = depositSearch;
+
+                return new ViewAsPdf("IndexForPDF", query.ToList())
                 {
                     FileName = "My Deposit " + DateTime.Today.ToString("dd-MMM-yyyy") + " " + DateTime.Now.ToString("h:mm:ss tt") + ".pdf",
                     PageSize = Size.A4,
                     PageOrientation = Orientation.Landscape,
+                    //PageWidth = 122, // it's in millimeters
+                    //PageHeight = 44,
                     PageMargins = { Left = 10, Right = 10 }
                 };
                 

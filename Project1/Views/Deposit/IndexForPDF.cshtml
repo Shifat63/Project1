@@ -1,0 +1,164 @@
+﻿@model IEnumerable<Project1.Models.tbl_Deposit>
+
+@{
+    Layout = "~/Views/Shared/_LayoutForDepositPDF.cshtml";
+}
+
+<div class="well-searchbox form-horizontal row jumbotron">
+
+    <div class="form-group">
+        <div class="col-md-8 col-md-offset-4">
+            <h1>Search Criterias</h1>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.DepositSearch.UserID))
+    {
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                User ID: @ViewBag.DepositSearch.UserID
+            </div>
+        </div>
+    }
+    
+    @if (!string.IsNullOrEmpty(ViewBag.DepositSearch.StartDate))
+    {
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                Searched From: @ViewBag.DepositSearch.StartDate
+            </div>
+        </div>
+    }
+    
+    @if (!string.IsNullOrEmpty(ViewBag.DepositSearch.EndDate))
+    {
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                Searched To: @ViewBag.DepositSearch.EndDate
+            </div>
+        </div>
+    }
+    
+    @if (!string.IsNullOrEmpty(ViewBag.DepositSearch.IsVerified))
+    {
+        
+        String VerStatus = "";
+        if (ViewBag.DepositSearch.IsVerified.Equals("1"))
+        {
+            VerStatus = "Approved";
+        }
+        else if (ViewBag.DepositSearch.IsVerified.Equals("2"))
+        {
+            VerStatus = "Pending";
+        }
+       
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-4">
+                Verification Status: @VerStatus
+            </div>
+        </div>
+    }
+    
+</div>
+
+
+<div class="form-group container">
+    <div class="row">
+        <div class="col-md-6 col-lg-6 col-sm-12">
+            <h2>@ViewBag.PDFTitle</h2>
+        </div>
+        <div class="col-md-6 col-lg-6 col-sm-12">
+            <h4>Created on: @ViewBag.PDFCreationDate</h4>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive container row">
+
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <th>
+                Serial No.
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SourceOfFund)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsVerified)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tbl_UserInfo.Name)
+            </th>
+        </tr>
+
+        @{
+            int i = 0;
+            String VerificationStatus = "";
+        }
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+            i++;
+                    }
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EntryDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SourceOfFund)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @{
+                        if (item.IsVerified)
+                        {
+                            VerificationStatus = "Approved";
+                        }
+                        else
+                        {
+                            VerificationStatus = "Pending";
+                        }
+                    }
+                    @VerificationStatus
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.tbl_UserInfo.Name)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>
+

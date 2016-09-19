@@ -309,6 +309,8 @@
     <Content Include="Views\Deposit\Approve.cshtml" />
     <Content Include="Views\Deposit\_PartialSearchDeposit.cshtml" />
     <Content Include="Views\Deposit\_PartialSearchDepositDirector.cshtml" />
+    <Content Include="Views\Deposit\IndexForPDF.cshtml" />
+    <Content Include="Views\Shared\_LayoutForDepositPDF.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
