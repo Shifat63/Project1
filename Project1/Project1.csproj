@@ -180,6 +180,7 @@
     <Compile Include="Controllers\DepositController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserInfoController.cs" />
+    <Compile Include="Controllers\ValidationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -201,7 +202,6 @@
     </Compile>
     <Compile Include="Models\DepositSearch.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\SavePDF.cs" />
     <Compile Include="Models\tbl_Deposit.cs">
       <DependentUpon>AlorOvijatri.tt</DependentUpon>
     </Compile>
@@ -316,6 +316,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Reports\" />
     <Folder Include="Views\SavePDF\" />
+    <Folder Include="Views\Validation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

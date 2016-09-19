@@ -10,10 +10,13 @@
 namespace Project1.Models
 {
     using System;
+
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Web.Mvc;
+    
     
     public partial class tbl_UserInfo
     {
@@ -22,6 +25,7 @@ namespace Project1.Models
             this.tbl_Deposit = new HashSet<tbl_Deposit>();
         }
 
+        [Remote("IsUserIDExist", "Validation", HttpMethod = "POST", ErrorMessage = "User ID already exists. Please enter a different one.")]
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "User ID")]
@@ -89,7 +93,7 @@ namespace Project1.Models
         [NotMapped]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("Password")]
+        [System.ComponentModel.DataAnnotations.Compare("Password")]
         public string ConfirmPassword { get; set; }
     
         public virtual ICollection<tbl_Deposit> tbl_Deposit { get; set; }

@@ -12,9 +12,11 @@ namespace Project1.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
     
     public partial class tbl_Deposit
     {
+        [Remote("IsPaymentIDExist", "Validation", HttpMethod = "POST", ErrorMessage = "Payment ID already exists. Please enter a different one.")]
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Payment ID")]
