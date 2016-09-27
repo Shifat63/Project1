@@ -5,6 +5,11 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMsg))
+{
+    <h4 style="color: green;">@ViewBag.SuccessMsg</h4>
+}
+
 <h2>Director List</h2>
 
 <p>
@@ -66,7 +71,10 @@
                         @Html.DisplayFor(modelItem => item.MotherName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DOB)
+                        @{
+                            string DOB = item.DOB.ToString("dd-MMM-yyyy");
+                        }
+                        @DOB
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.PresentAddress)

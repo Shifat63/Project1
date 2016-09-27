@@ -17,12 +17,12 @@ namespace Project1.Controllers
         // GET: /UserInfo/
         public ActionResult Index()
         {
-            var query = (from User in db.tbl_UserInfo
-                         where (User.UserTypeID != 1)
-                         select User).ToList();
             //var tbl_userinfo = db.tbl_UserInfo.Include(t => t.tbl_UserType);
             if ("Super Admin".Equals(Session["UserType"]) && Session["UserID"]!=null)
             {
+                var query = (from User in db.tbl_UserInfo
+                             where (User.UserTypeID != 1)
+                             select User).ToList();
                 return View(query);
             }
             else
@@ -47,6 +47,7 @@ namespace Project1.Controllers
                 {
                     return HttpNotFound();
                 }
+                ViewBag.ProfileTitle = "Director Details";
                 return View(tbl_userinfo);
             }
             else
@@ -56,6 +57,28 @@ namespace Project1.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
+
+        public ActionResult ViewProfile()
+        {
+            if (("Director".Equals(Session["UserType"]) || "Super Admin".Equals(Session["UserType"])) && Session["UserID"] != null)
+            {
+                string id = Session["UserID"].ToString();
+                tbl_UserInfo tbl_userinfo = db.tbl_UserInfo.Find(id);
+                if (tbl_userinfo == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.ProfileTitle = "My Profile";
+                return View("Details", tbl_userinfo);
+            }
+            else
+            {
+                Session.Remove("UserID");
+                Session.Remove("UserType");
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
 
         // GET: /UserInfo/Create
         public ActionResult Create()
@@ -84,7 +107,8 @@ namespace Project1.Controllers
             {
                 db.tbl_UserInfo.Add(tbl_userinfo);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.SuccessMsg = "User created successfully";
+                return View("Index",db.tbl_UserInfo);
             }
             else
             {
@@ -97,7 +121,7 @@ namespace Project1.Controllers
         // GET: /UserInfo/Edit/5
         public ActionResult Edit(string id)
         {
-            if ("Super Admin".Equals(Session["UserType"]) && Session["UserID"] != null)
+            if (("Director".Equals(Session["UserType"]) || "Super Admin".Equals(Session["UserType"])) && Session["UserID"] != null)
             {
                 if (id == null)
                 {
@@ -126,11 +150,12 @@ namespace Project1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UserID,UserTypeID,Name,FatherName,MotherName,DOB,PresentAddress,PermanentAddress,Occupation,Mobile,NID,Email,IsActive,Password,ConfirmPassword")] tbl_UserInfo tbl_userinfo)
         {
-            if ("Super Admin".Equals(Session["UserType"]) && Session["UserID"] != null)
+            if (("Director".Equals(Session["UserType"]) || "Super Admin".Equals(Session["UserType"])) && Session["UserID"] != null)
             { 
                 db.Entry(tbl_userinfo).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.SuccessMsg = "User information updated successfully";
+                return View("Index", db.tbl_UserInfo);
             }
             else
             {
@@ -174,7 +199,8 @@ namespace Project1.Controllers
                 tbl_UserInfo tbl_userinfo = db.tbl_UserInfo.Find(id);
                 db.tbl_UserInfo.Remove(tbl_userinfo);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.SuccessMsg = "User deleted successfully";
+                return View("Index", db.tbl_UserInfo);
             }
             else
             {

@@ -11,6 +11,11 @@
 
 @Html.Partial("_PartialSearchDeposit", new Project1.Models.DepositSearch())
 
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMsg))
+{
+    <h4 style="color: green;">@ViewBag.SuccessMsg</h4>
+}
+
 <div class="table-responsive container row">
     
     <table class="table table-striped table-bordered table-hover">
@@ -68,10 +73,16 @@
                     @Html.DisplayFor(modelItem => item.Amount)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PaymentDate)
+                    @{
+                        string PaymentDate = item.PaymentDate.ToString("dd-MMM-yyyy");
+                    }
+                    @PaymentDate
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EntryDate)
+                    @{
+                        string EntryDate = item.EntryDate.ToString("dd-MMM-yyyy");
+                    }
+                    @EntryDate
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SourceOfFund)

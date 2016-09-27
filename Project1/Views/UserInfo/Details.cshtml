@@ -2,10 +2,17 @@
 
 @{
     ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    if ("Super Admin".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    if ("Director".Equals(Session["UserType"]) && Session["UserID"] != null)
+    {
+        Layout = "~/Views/Shared/_LayoutDirector.cshtml";
+    }
 }
 
-<h2>Director Details</h2>
+<h2>@ViewBag.ProfileTitle</h2>
 
 <div>
     <h4></h4>
@@ -109,7 +116,21 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.UserID }) |
-    @Html.ActionLink("Back to Director List", "Index")
-</p>
+
+@if (!string.IsNullOrEmpty(ViewBag.ProfileTitle))
+{
+    if ("Director Details".Equals(ViewBag.ProfileTitle))
+    {
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.UserID }) |
+            @Html.ActionLink("Back to Director List", "Index")
+        </p>
+    }
+    else if ("My Profile".Equals(ViewBag.ProfileTitle))
+    {
+        <p>
+            @Html.ActionLink("Change Password", "ChangePassword", "Account")
+        </p>
+    }
+}
+
