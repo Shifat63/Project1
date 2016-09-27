@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Project1.Models;
+using System.Data.Entity;
 
 namespace Project1.Controllers
 {
@@ -130,71 +131,73 @@ namespace Project1.Controllers
         //    return RedirectToAction("Manage", new { Message = message });
         //}
 
-        ////
-        //// GET: /Account/Manage
-        //public ActionResult Manage(ManageMessageId? message)
-        //{
-        //    ViewBag.StatusMessage =
-        //        message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-        //        : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-        //        : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-        //        : message == ManageMessageId.Error ? "An error has occurred."
-        //        : "";
-        //    ViewBag.HasLocalPassword = HasPassword();
-        //    ViewBag.ReturnUrl = Url.Action("Manage");
-        //    return View();
-        //}
+        //
+        
+        [AllowAnonymous]
+        public ActionResult ChangePassword()
+        {
+            if (("Director".Equals(Session["UserType"]) || "Super Admin".Equals(Session["UserType"])) && Session["UserID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                Session.Remove("UserID");
+                Session.Remove("UserType");
+                return RedirectToAction("Login", "Account");
+            }
+        }
 
-        ////
-        //// POST: /Account/Manage
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Manage(ManageUserViewModel model)
-        //{
-        //    bool hasPassword = HasPassword();
-        //    ViewBag.HasLocalPassword = hasPassword;
-        //    ViewBag.ReturnUrl = Url.Action("Manage");
-        //    if (hasPassword)
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-        //            if (result.Succeeded)
-        //            {
-        //                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
-        //            }
-        //            else
-        //            {
-        //                AddErrors(result);
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // User does not have a password so remove any validation errors caused by a missing OldPassword field
-        //        ModelState state = ModelState["OldPassword"];
-        //        if (state != null)
-        //        {
-        //            state.Errors.Clear();
-        //        }
-
-        //        if (ModelState.IsValid)
-        //        {
-        //            IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-        //            if (result.Succeeded)
-        //            {
-        //                return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-        //            }
-        //            else
-        //            {
-        //                AddErrors(result);
-        //            }
-        //        }
-        //    }
-
-        //    // If we got this far, something failed, redisplay form
-        //    return View(model);
-        //}
+        //
+        // POST: /Account/Manage
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            if (("Director".Equals(Session["UserType"]) || "Super Admin".Equals(Session["UserType"])) && Session["UserID"] != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    String UserID = Session["UserID"].ToString();
+                    tbl_UserInfo tbl_userinfo = db.tbl_UserInfo.Find(UserID);
+                    try
+                    {
+                        if (tbl_userinfo.Password.Equals(model.OldPassword))
+                        {
+                            tbl_userinfo.Password = model.NewPassword;
+                            tbl_userinfo.ConfirmPassword = model.ConfirmPassword;
+                            db.Entry(tbl_userinfo).State = EntityState.Modified;
+                            db.SaveChanges();
+                            ViewBag.SuccessMsg = "Password changed successfully";
+                            return View();
+                        }
+                        else
+                        {
+                            // Wrong old password
+                            ModelState.AddModelError("", "Invalid password");
+                            return View(model);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        ModelState.AddModelError("", "There are some errors. Please Try again.");
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid submission. Please Try again.");
+                    return View(model);
+                }
+            }
+            else
+            {
+                Session.Remove("UserID");
+                Session.Remove("UserType");
+                return RedirectToAction("Login", "Account");
+            }
+        }
 
         ////
         //// POST: /Account/ExternalLogin

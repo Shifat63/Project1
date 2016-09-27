@@ -18,10 +18,10 @@ namespace Project1.Controllers
 
         // GET: /Deposit/
         public ActionResult Index()
-        {
-            var tbl_deposit = db.tbl_Deposit.Include(t => t.tbl_UserInfo);
+        { 
             if ("Super Admin".Equals(Session["UserType"]) && Session["UserID"] != null)
             {
+                var tbl_deposit = db.tbl_Deposit.Include(t => t.tbl_UserInfo);
                 ViewBag.tbl_UserInfo = db.tbl_UserInfo;
                 return View(tbl_deposit.ToList());
             }
@@ -31,6 +31,12 @@ namespace Project1.Controllers
                 Session.Remove("UserType");
                 return RedirectToAction("Login", "Account");
             }
+        }
+        public ActionResult IndexForPDF()
+        {
+            Session.Remove("UserID");
+            Session.Remove("UserType");
+            return RedirectToAction("Login", "Account");
         }
 
 
@@ -69,11 +75,17 @@ namespace Project1.Controllers
                     query = query.Where(x => x.IsVerified == status);
                 }
 
-                return new ViewAsPdf("Index", query.ToList())
+                ViewBag.PDFTitle = "View Deposits";
+                ViewBag.PDFCreationDate = DateTime.Today.ToString("dd-MMM-yyyy");
+                ViewBag.DepositSearch = depositSearch;
+
+                return new ViewAsPdf("IndexForPDF", query.ToList())
                 {
                     FileName = "Deposit " + DateTime.Today.ToString("dd-MMM-yyyy") + " " + DateTime.Now.ToString("h:mm:ss tt") + ".pdf",
                     PageSize = Size.A4,
                     PageOrientation = Orientation.Landscape,
+                    //PageWidth = 650, // it's in millimeters
+                    //PageHeight = 250,
                     PageMargins = { Left = 10, Right = 10 }
                 };
             }
@@ -118,11 +130,18 @@ namespace Project1.Controllers
                     }
                     query = query.Where(x => x.IsVerified == status);
                 }
-                return new ViewAsPdf("Index", query.ToList())
+
+                ViewBag.PDFTitle = "My Deposits";
+                ViewBag.PDFCreationDate = DateTime.Today.ToString("dd-MMM-yyyy");
+                ViewBag.DepositSearch = depositSearch;
+
+                return new ViewAsPdf("IndexForPDF", query.ToList())
                 {
                     FileName = "My Deposit " + DateTime.Today.ToString("dd-MMM-yyyy") + " " + DateTime.Now.ToString("h:mm:ss tt") + ".pdf",
                     PageSize = Size.A4,
                     PageOrientation = Orientation.Landscape,
+                    //PageWidth = 122, // it's in millimeters
+                    //PageHeight = 44,
                     PageMargins = { Left = 10, Right = 10 }
                 };
                 
@@ -233,13 +252,13 @@ namespace Project1.Controllers
 
         public ActionResult IndexForDirectors()
         {
-            String UserID = Session["UserID"].ToString();
-            var query = (from Deposit in db.tbl_Deposit
-                         where Deposit.UserID.Equals(UserID)
-                         select Deposit).ToList();
             //var tbl_deposit = db.tbl_Deposit.Include(t => t.tbl_UserInfo);
             if (("Director".Equals(Session["UserType"]) || "Super Admin".Equals(Session["UserType"])) && Session["UserID"] != null)
             {
+                String UserID = Session["UserID"].ToString();
+                var query = (from Deposit in db.tbl_Deposit
+                             where Deposit.UserID.Equals(UserID)
+                             select Deposit).ToList();
                 return View(query);
             }
             else
@@ -301,7 +320,12 @@ namespace Project1.Controllers
             {
                 db.tbl_Deposit.Add(tbl_deposit);
                 db.SaveChanges();
-                return RedirectToAction("IndexForDirectors");
+                ViewBag.SuccessMsg = "Deposit is sent for admin verification";
+                String UserID = Session["UserID"].ToString();
+                var query = (from Deposit in db.tbl_Deposit
+                             where Deposit.UserID.Equals(UserID)
+                             select Deposit).ToList();
+                return View("IndexForDirectors", query);
             }
             else
             {
@@ -376,7 +400,12 @@ namespace Project1.Controllers
             {
                 db.Entry(tbl_deposit).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("IndexForDirectors");
+                ViewBag.SuccessMsg = "Deposit information updated successfully";
+                String UserID = Session["UserID"].ToString();
+                var query = (from Deposit in db.tbl_Deposit
+                             where Deposit.UserID.Equals(UserID)
+                             select Deposit).ToList();
+                return View("IndexForDirectors", query);
             }
             else
             {
@@ -500,7 +529,9 @@ namespace Project1.Controllers
                     //Console.WriteLine(e)
                     // Provide for exceptions.
                 }
-                return RedirectToAction("Index");
+                ViewBag.tbl_UserInfo = db.tbl_UserInfo;
+                ViewBag.SuccessMsg = "Deposit approved successfully";
+                return View("Index", db.tbl_Deposit);
             }
             else
             {
@@ -520,7 +551,12 @@ namespace Project1.Controllers
                 tbl_Deposit tbl_deposit = db.tbl_Deposit.Find(id);
                 db.tbl_Deposit.Remove(tbl_deposit);
                 db.SaveChanges();
-                return RedirectToAction("IndexForDirectors");
+                ViewBag.SuccessMsg = "Deposit deleted successfully";
+                String UserID = Session["UserID"].ToString();
+                var query = (from Deposit in db.tbl_Deposit
+                             where Deposit.UserID.Equals(UserID)
+                             select Deposit).ToList();
+                return View("IndexForDirectors", query);
             }
             else
             {
