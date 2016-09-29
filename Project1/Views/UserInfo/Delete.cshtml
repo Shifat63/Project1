@@ -41,7 +41,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DOB)
+            @{
+                string DOB = Model.DOB.ToString("dd-MMM-yyyy");
+            }
+            @DOB
         </dd>
 
         <dt>
