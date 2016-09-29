@@ -26,7 +26,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PaymentDate)
+            @{
+                string PaymentDate = Model.PaymentDate.ToString("dd-MMM-yyyy");
+            }
+            @PaymentDate
         </dd>
 
         <dt>
@@ -34,7 +37,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EntryDate)
+           @{
+                string EntryDate = Model.EntryDate.ToString("dd-MMM-yyyy");
+            }
+            @EntryDate
         </dd>
 
         <dt>
